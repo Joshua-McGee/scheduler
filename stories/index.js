@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
@@ -17,6 +17,9 @@ import Show from "components/Appointment/Show";
 import Confirm from "components/Appointment/Confirm";
 import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
+import Form from "components/Appointment/Form";
+import AppointmentEmpty from "components/Appointment/AppointmentEmpty";
+
 
 
 storiesOf("Button", module)
@@ -144,7 +147,9 @@ storiesOf("Appointment", module)
   .addParameters({
     backgrounds: [{ name: "white", value: "#fff", default: true }]
   })
-  .add("Appointment", () => ( <Appointment />))
+  .add("Appointment", () => ( 
+    <Appointment
+     />))
   .add("Appointment with Time", () => (
     <Appointment
       time={"12pm"}
@@ -175,14 +180,58 @@ storiesOf("Appointment", module)
       onCancel={action("onCancel")}
     />
   ))
-  .add("Status", () => (
+  .add("Deleting Status", () => (
     <Status
       message="Deleting"
     />
   ))
-  .add("Error", () => (
+  .add("Saving Status", () => (
+    <Status
+      message="Saving"
+    />
+  ))
+  .add("Error Deleting", () => (
     <Error
       message="Could not delete appointment."
       onClose={action("onClose")}
     />
+  ))
+  .add("Error Saving", () => (
+    <Error
+      message="Could not Save appointment."
+      onClose={action("onClose")}
+    />
+  ))
+  .add("Edit Form", () => (
+    <Form
+      name="Joshua McGee"
+      interviewers={interviewers}
+      interviewer={3}
+      setInterviewer={action("setInterviewer")}
+      onSave={action("onSave")}
+      onCancel={action("Cancel")}
+    />
+  ))
+  .add("Create Form", () => (
+    <Form
+      interviewers={interviewers}
+      onSave={action("onSave")}
+      onCancel={action("Cancel")}
+    />
+  ))
+  .add("Appointment Empty", () => (
+    <Fragment>
+    <AppointmentEmpty id={1} time="12pm" />
+    <AppointmentEmpty id="last" time="1pm" />
+  </Fragment>
+  ))
+  .add("Appointment Booked", () => (
+    <Fragment>
+      <Appointment
+        id={1}
+        time="12pm"
+        interview={{ student: "Lydia Miller-Jones", interviewer }}
+      />
+      <Appointment id="last" time="1pm" />
+    </Fragment>
   ));

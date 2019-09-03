@@ -1,14 +1,17 @@
 import React from "react";
 import classnames from 'classnames';
+import Header from "components/Appointment/Header";
+import Show from "components/Appointment/Show";
+import Empty from "components/Appointment/Empty";
 import "components/Appointment/styles.scss";
 
 
 export default function Appointment(props) {
-  // const appointmentClass = classnames("button", {
-  //   "button--confirm": props.confirm,
-  //   "button--danger": props.danger
-  // });
+ 
   return (
-    <article className="appointment"></article>
+    <article className="appointment">
+      <Header>{props.time}</Header>
+      <Empty></Empty>
+    </article>
   );
 }
