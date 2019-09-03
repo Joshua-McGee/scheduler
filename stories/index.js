@@ -19,6 +19,7 @@ import Status from "components/Appointment/Status";
 import Error from "components/Appointment/Error";
 import Form from "components/Appointment/Form";
 import AppointmentEmpty from "components/Appointment/AppointmentEmpty";
+import AppointmentShow from "components/Appointment/AppointmentShow";
 
 
 
@@ -227,11 +228,11 @@ storiesOf("Appointment", module)
   ))
   .add("Appointment Booked", () => (
     <Fragment>
-      <Appointment
+      <AppointmentShow
         id={1}
         time="12pm"
         interview={{ student: "Lydia Miller-Jones", interviewer }}
       />
-      <Appointment id="last" time="1pm" />
+      <AppointmentShow id="last" time="1pm" />
     </Fragment>
   ));
