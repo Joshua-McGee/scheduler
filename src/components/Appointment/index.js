@@ -1,5 +1,6 @@
 import React from "react";
-import classnames from 'classnames';
+//import classnames from 'classnames';
+import "components/Appointment/styles.scss";
 //import Appointment from "components/Appointment";
 
 export default function Appointment(props) {
