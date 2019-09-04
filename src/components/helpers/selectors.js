@@ -1,5 +1,5 @@
 
-export function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
   let finalArr = []
   let dayObject = state.days.find(days => days.name === day);
   if(dayObject === undefined) {
