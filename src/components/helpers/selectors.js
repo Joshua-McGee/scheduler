@@ -1,5 +1,5 @@
 
-export default function getAppointmentsForDay(state, day) {
+export function getAppointmentsForDay(state, day) {
   let finalArr = []
   let dayObject = state.days.find(days => days.name === day);
   if(dayObject === undefined) {
@@ -10,23 +10,23 @@ export default function getAppointmentsForDay(state, day) {
   return finalArr;
 }
 
-/* old way of solving the problem */
-
-  //let finalArr = [];
-  // const appointmentsArray = state.days.filter(days=> days.name === day);
-  // for (let day of appointmentsArray) {
-  //   //console.log(value.id);
-  //   for (let id in state.appointments) {
-  //     // compares the value of a day to the id of an appointment
-  //     //console.log(state.appointments[id].id)
-  //     if (day.id === (state.appointments[id].id)) {
-        
-  //       for (let appt of day.appointments){
-  //         // push that value to the array
-  //         finalArr.push(state.appointments[appt]);
-  //       }   
-  //     }
-  //   }
-  // }
-  // return finalArr
+export function getInterview(state, interview) {
+  let finalObj = {}
+  //console.log("this is the state:", state.interviewers,"this is the interview:", interview);
+  let interviewObj = state.interviewers;
+  let studentObj = interview;
+  //console.log(studentObj);
+  if(interview === null) {
+    return null;
+  } else {
+    for (let id in state.interviewers){
+      //console.log(parseInt(id));
+      if(parseInt(id) === studentObj.interviewer) {
+        //console.log("############## MATCHING ################");
+        finalObj = {interviewer: interviewObj[id], student: studentObj.student};
+      }
+    }
+  }
+  return finalObj;
+}
   

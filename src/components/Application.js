@@ -5,50 +5,48 @@ import axios from "axios";
 import "components/Application.scss";
 import "components/Appointment/index.js"
 import Appointment from "components/Appointment/index.js";
-import getAppointmentsForDay from "components/helpers/selectors.js";
+import {getAppointmentsForDay, getInterview} from "components/helpers/selectors.js";
 
 export default function Application(props) {
-  //const [day, setDay] = useState("Monday");
-  //const [days, setDays] = useState([]);
-  const setDay = day => setState({ ...state, day });
-  // removed because we will need to download days data first
-  //const setDays = days => setState(prev => ({ ...prev, days }));
-  
 
+  //changes the day state based on what day we click in the nav
+  const setDay = day => setState({ ...state, day });
+  
+  //used to dynamically update our states
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
 
+  // gets the data from our api server and sets our state to that data
   useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
-      //Promise.resolve(axios.get("/api/interviewers")),
+      axios.get("/api/interviewers"),
     ]).then((all) => {
-      //console.log(all[0].data); // first
-      //console.log(all[1].data); // second
-      //console.log(all[2]); // third
-      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data }));
+      setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     });
     
   }, []);
 
-  //console.log(getAppointmentsForDay(state.appointments, state.day));
-
+  // returns the appointment data using my helpers to return the proper data
    const list = getAppointmentsForDay(state, state.day).map(appointment => {
-     return (
-      <Fragment>
+
+     const interview = getInterview(state, appointment.interview);
+
+     return ( 
       <Appointment
       key={appointment.id}
+      id={appointment.id}
       time={appointment.time}
-      interview={appointment.interview}
+      interview={interview}
     />
-    </Fragment>
    )});
   
-  
+  // everything below is what is painted to the DOM
   return (
     <main className="layout">
       <section className="sidebar">
