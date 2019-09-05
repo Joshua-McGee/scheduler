@@ -29,8 +29,30 @@ export default function Application(props) {
     }).catch(e => console.log(e));
   }
 
-  function cancelInterview(id, interview) {
+   //Function that lets us edit the interview and updates our state + server
+   function editInterview(id, interview) {
     console.log("this is the id:", id, "this is the interview:", interview);
+  }
+
+  // functions used to cancel the interview and update the database and react state
+  function cancelInterview(id, interview) {
+    //used to send our data for setState
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState(state => ({...state, appointments}));
+    axios.delete(`/api/appointments/${id}`, {
+      // this is an object which has interviewer and student which the server expects
+      interview
+    })
+    .then(res => {
+      //calls setstate after we give the new data
+    }).catch(e => console.log(e));
   }
 
   //changes the day state based on what day we click in the nav
@@ -53,16 +75,13 @@ export default function Application(props) {
     ]).then((all) => {
       setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
     });
-    
   }, []);
 
-  // returns the appointment data using my helpers to return the proper data
+  // returns the appointment data using my helpers to return filtered data
    const list = getAppointmentsForDay(state, state.day).map(appointment => {
 
      const interview = getInterview(state, appointment.interview);
      const interviewers = getInterviewersForDay(state, state.day);
-     //bookinterview needs to pass props
-     //bookInterview(appointment.id, appointment.interview); 
 
      return ( 
       <Appointment
@@ -72,6 +91,8 @@ export default function Application(props) {
       interview={interview}
       interviewers={interviewers}
       bookInterview={bookInterview}
+      cancelInterview={cancelInterview}
+      editInterview={editInterview}
     />
    )});
   
