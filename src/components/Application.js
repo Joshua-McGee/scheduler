@@ -9,6 +9,30 @@ import {getAppointmentsForDay, getInterviewersForDay, getInterview} from "compon
 
 export default function Application(props) {
 
+  //book interview function needs to be passed
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    setState(state => ({...state, appointments}));
+    axios.put(`/api/appointments/${id}`, {
+      // this is an object which has interviewer and student which the server expects
+      interview
+    })
+    .then(res => {
+      //calls setstate after we give the new data
+    }).catch(e => console.log(e));
+  }
+
+  function cancelInterview(id, interview) {
+    console.log("this is the id:", id, "this is the interview:", interview);
+  }
+
   //changes the day state based on what day we click in the nav
   const setDay = day => setState({ ...state, day });
   
@@ -37,7 +61,8 @@ export default function Application(props) {
 
      const interview = getInterview(state, appointment.interview);
      const interviewers = getInterviewersForDay(state, state.day);
-     console.log(interview);
+     //bookinterview needs to pass props
+     //bookInterview(appointment.id, appointment.interview); 
 
      return ( 
       <Appointment
@@ -46,6 +71,7 @@ export default function Application(props) {
       time={appointment.time}
       interview={interview}
       interviewers={interviewers}
+      bookInterview={bookInterview}
     />
    )});
   
