@@ -5,7 +5,18 @@ export function getAppointmentsForDay(state, day) {
   if(dayObject === undefined) {
     return finalArr;
   } else {
-    finalArr = dayObject.appointments.map(appt => state.appointments[appt]);
+   dayObject.appointments.map(appt => finalArr.push(state.appointments[appt]));
+  }
+  return finalArr;
+}
+// get an array of interviewers not interviews
+export function getInterviewersForDay(state, day) {
+  let finalArr = []
+  let dayObject = state.days.find(days => days.name === day);
+  if(!dayObject) {
+    return finalArr;
+  } else {
+    dayObject.interviewers.map(interviewer => finalArr.push(state.interviewers[interviewer]));
   }
   return finalArr;
 }
