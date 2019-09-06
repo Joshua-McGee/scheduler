@@ -17,6 +17,12 @@ export default function Show(props) {
     interviewer = null;
     props.onDelete(name, interviewer); 
   }
+
+  const Edit = () => {
+    Reset();
+    props.onEdit(name, interviewer);
+  }
+
   return (
     <main className="appointment__card appointment__card--show">
   <section className="appointment__card-left">
@@ -32,7 +38,7 @@ export default function Show(props) {
         className="appointment__actions-button"
         src="images/edit.png"
         alt="Edit"
-        onClick={props.edit}
+        onClick={Edit}
       />
       <img
         className="appointment__actions-button"
