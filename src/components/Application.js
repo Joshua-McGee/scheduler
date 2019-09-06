@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import DayList from "components/DayList.js";
 
 import "components/Application.scss";
@@ -15,6 +15,8 @@ export default function Application(props) {
     bookInterview,
     cancelInterview
   } = useApplicationData();
+
+  useEffect(() => setDay("Monday"), [])
 
   // returns the appointment data using my helpers to return filtered data
    const list = getAppointmentsForDay(state, state.day).map(appointment => {
