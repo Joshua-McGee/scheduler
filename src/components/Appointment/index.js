@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
@@ -61,21 +61,14 @@ export default function Appointment(props) {
   
 
   const { mode, transition, back } = useVisualMode(
-    EMPTY 
+    props.interview ? SHOW : EMPTY 
   );
-  useEffect(()=> {
-    if(props.interview && props.interview.interviewer) {
-      transition(SHOW)
-    } else {
-      transition(EMPTY)
-    }
-  }, [props.interview])
-    //props.interview ? SHOW : EMPTY
+  
   return (
   <article className="appointment">
     <Header time={props.time}></Header>
     {mode === EMPTY && <Empty onAdd={() => transition(CREATE)}/>}
-    {mode === SHOW && <Show
+    {mode === SHOW && props.interview && <Show
     student={props.interview.student}
     interviewer={props.interview.interviewer.name}
     onDelete={confirmingDelete}

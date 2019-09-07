@@ -7,6 +7,7 @@ export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
+  const SET_SPOTS = "SET_SPOTS";
 
    //used to dynamically update our states
    const [state, dispatch] = useReducer(reducer, 
@@ -14,7 +15,7 @@ export default function useApplicationData() {
       day: "Monday",
       days: [],
       interviewers: {},
-      appointments: {}
+      appointments: {},
 })
 
 function reducer(state_, action) {
@@ -31,6 +32,17 @@ function reducer(state_, action) {
     case SET_INTERVIEW:
       state.appointments = action.value
       break;
+    case SET_SPOTS: 
+    console.log(action.value)
+    state.days.map((day) => {
+      console.log(day);
+      if(day.name === state.day) {
+         day.spots += action.value;
+      } else {
+         //state.appointment.spots +=1;
+      }
+  })
+      break;
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`
@@ -39,8 +51,10 @@ function reducer(state_, action) {
   return state;
 }
 
+
     //book interview function needs to be passed
     function bookInterview(id, interview) {
+      
       const appointment = {
         ...state.appointments[id],
         interview: { ...interview }
@@ -49,6 +63,7 @@ function reducer(state_, action) {
         ...state.appointments,
         [id]: appointment
       };
+      dispatch({type: SET_SPOTS, value: -0.5})
 
       //setState(state => ({...state, appointments}));
       return axios.put(`/api/appointments/${id}`, {
@@ -72,6 +87,7 @@ function reducer(state_, action) {
         ...state.appointments,
         [id]: appointment
       };
+      dispatch({type: SET_SPOTS, value: 0.5})
       
       return axios.delete(`/api/appointments/${id}`, {
         // this is an object which has interviewer and student which the server expects
