@@ -33,13 +33,9 @@ function reducer(state_, action) {
       state.appointments = action.value
       break;
     case SET_SPOTS: 
-    console.log(action.value)
     state.days.map((day) => {
-      console.log(day);
       if(day.name === state.day) {
          day.spots += action.value;
-      } else {
-         //state.appointment.spots +=1;
       }
   })
       break;
