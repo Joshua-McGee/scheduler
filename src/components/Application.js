@@ -2,13 +2,11 @@ import React from "react";
 import DayList from "components/DayList.js";
 
 import "components/Application.scss";
-import "components/Appointment/index.js"
 import Appointment from "components/Appointment/index.js";
 import {getAppointmentsForDay, getInterviewersForDay, getInterview} from "components/helpers/selectors.js";
 import useApplicationData from "components/hooks/useApplicationData.js";
 
 export default function Application(props) {
-
   const {
     state,
     setDay,
