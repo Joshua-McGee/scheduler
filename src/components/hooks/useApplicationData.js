@@ -61,7 +61,6 @@ function reducer(state_, action) {
       };
       dispatch({type: SET_SPOTS, value: -0.5})
 
-      //setState(state => ({...state, appointments}));
       return axios.put(`/api/appointments/${id}`, {
         // this is an object which has interviewer and student which the server expects
         interview
