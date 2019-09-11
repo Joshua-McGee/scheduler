@@ -7,8 +7,7 @@ export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
-  const SET_SPOTS = "SET_SPOTS";
-
+  
   //used to dynamically update our states
   const [state, dispatch] = useReducer(reducer,
     {
@@ -33,23 +32,37 @@ export default function useApplicationData() {
           interviewers: action.value.interviewers
         }
       case SET_INTERVIEW:
-        return {
-          ...state,
-          appointments: action.value
-        }
-      case SET_SPOTS:
-        return {
-          ...state,
-          days: state.days.map((day) => {
-            if (day.name === state.day) {
-              return {...day,
-                spots: day.spots + action.value
-              };
-            } 
-            return day
-          })
-        }
-
+          const appointment = {
+            ...state.appointments[action.id],
+            interview: action.interview && { ...action.interview }
+          };
+    
+          const appointments = {
+            ...state.appointments,
+            [action.id]: appointment
+          };
+    
+          const getSpotsForDay = day =>
+            day.appointments.length -
+            day.appointments.reduce(
+              (count, id) => (appointments[id].interview ? count + 1 : count),
+              0
+            );
+    
+          const days = state.days.map(day => {
+            return day.appointments.includes(action.id)
+              ? {
+                  ...day,
+                  spots: getSpotsForDay(day)
+                }
+              : day;
+          });
+    
+          return {
+            ...state,
+            appointments,
+            days
+          };
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -57,53 +70,26 @@ export default function useApplicationData() {
     }
   }
 
-
   //book interview function needs to be passed
   function bookInterview(id, interview) {
-
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    
-
-    return axios.put(`/api/appointments/${id}`, {
-      // this is an object which has interviewer and student which the server expects
-      interview
-    })
-      .then(res => {
-        //calls setstate after we give the new data
-        dispatch({ type: SET_SPOTS, value: -1 })
-        dispatch({ type: SET_INTERVIEW, value: appointments });
-      })
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      dispatch({
+        type: SET_INTERVIEW,
+        id,
+        interview
+      });
+    });
   }
 
   // functions used to cancel the interview and update the database and react state
-  function cancelInterview(id, interview) {
-    //used to send our data for setState
-    const appointment = {
-      ...state.appointments[id],
-      interview: { ...interview }
-    };
-    const appointments = {
-      ...state.appointments,
-      [id]: appointment
-    };
-    
-
-    return axios.delete(`/api/appointments/${id}`, {
-      // this is an object which has interviewer and student which the server expects
-      interview
-    })
-      .then(res => {
-        //calls setstate after we give the new data
-        dispatch({ type: SET_SPOTS, value: 1 })
-        dispatch({ type: SET_INTERVIEW, value: appointments });
-      })
+  function cancelInterview(id) {
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      dispatch({
+        type: SET_INTERVIEW,
+        id,
+        interview: null
+      });
+    });
   }
 
   //changes the day state based on what day we click in the nav

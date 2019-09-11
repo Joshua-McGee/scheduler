@@ -42,11 +42,11 @@ export default function Appointment(props) {
   }
   // used to transition to confirm when the delete icon is clicked on the form
   function confirmingDelete() {
-    transition(CONFIRM);
+    transition(CONFIRM, true);
   }
 
   function edit() {
-    transition(EDIT);
+    transition(EDIT, true);
   }
 
   const EMPTY = "EMPTY";
