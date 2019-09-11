@@ -4,7 +4,7 @@ import Empty from "components/Appointment/Empty";
 import Show from "components/Appointment/Show";
 import "components/Appointment/styles.scss";
 
-
+// I ended up only using this for testing in storybook otherwise it is not used for our application
 export default function Appointment(props) {
  
   return (

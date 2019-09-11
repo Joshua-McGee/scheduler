@@ -35,36 +35,37 @@ describe("Form", () => {
     /* 3. Click the save button */
     fireEvent.click(getByText("Save"));
 
-    expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
+    expect(getByText(/Please provide a student name and interviewer/i)).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   });
   
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
-    const { debug, getByText, getByPlaceholderText, queryByText } = render(
+    const { debug, getByText, getByAltText, getByPlaceholderText, queryByText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
   
     fireEvent.click(getByText("Save"));
   
-    expect(getByText(/student name cannot be blank/i)).toBeInTheDocument();
+    expect(getByText(/Please provide a student name and interviewer/i)).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
   
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
       target: { value: "Lydia Miller-Jones" }
     });
-    debug();
+    fireEvent.click(getByAltText("Sylvia Palmer"));
+    
     fireEvent.click(getByText("Save"));
   
-    expect(queryByText(/student name cannot be blank/i)).toBeNull();
+    expect(queryByText(/Please provide a student name and interviewer/i)).toBeNull();
   
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
 
   it("calls onCancel and resets the input field", () => {
     const onCancel = jest.fn();
-    const { getByText, getByPlaceholderText, queryByText } = render(
+    const { getByText, getByPlaceholderText, queryByText, getByAltText } = render(
       <Form
         interviewers={interviewers}
         name="Lydia Mill-Jones"
@@ -72,16 +73,18 @@ describe("Form", () => {
         onCancel={onCancel}
       />
     );
-  
+    // need to click an interviewer or it throws an error could also pass this into the form
+    fireEvent.click(getByAltText("Sylvia Palmer"));
+    // click the save button
     fireEvent.click(getByText("Save"));
-  
+    // change the placeholderText to be a name
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
       target: { value: "Lydia Miller-Jones" }
     });
-  
+    // click the cancel button
     fireEvent.click(getByText("Cancel"));
   
-    expect(queryByText(/student name cannot be blank/i)).toBeNull();
+    expect(queryByText(/Please provide a student name and interviewer/i)).toBeNull();
   
     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
   

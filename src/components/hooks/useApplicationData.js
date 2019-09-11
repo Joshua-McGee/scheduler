@@ -19,7 +19,7 @@ export default function useApplicationData() {
       appointments: {}
     })
 
-  //book interview function needs to be passed
+  //book interview function updates our server which then in return changes our state
   function bookInterview(id, interview) {
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       dispatch({

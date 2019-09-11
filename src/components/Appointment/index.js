@@ -45,6 +45,7 @@ export default function Appointment(props) {
     transition(CONFIRM, true);
   }
 
+  // used to transition to the Edit page
   function edit() {
     transition(EDIT, true);
   }
@@ -59,11 +60,12 @@ export default function Appointment(props) {
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
   
-
+  // checks if we have props.interview and renders the proper component based on this
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY 
   );
   
+  // all of my modes have different components and in some cases different props passed
   return (
   <article className="appointment" data-testid="appointment">
     <Header time={props.time}></Header>

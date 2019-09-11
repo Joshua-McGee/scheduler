@@ -8,7 +8,8 @@ export default function Form(props) {
   const [name, setName] = useState(props.name || "");
   const [error, setError] = useState("");
 
-  const Reset = (prop) => {
+  // resets our inputs 
+  const Reset = () => {
     setName("") 
     setInterviewer(null);
     return;
@@ -26,13 +27,14 @@ export default function Form(props) {
       setError("");
       props.onSave(name, interviewer);
     } else {
-      setError("Student name cannot be blank");
+      setError("Please provide a student name and interviewer");
       Reset();
     }
   }
 
+  // function used to return a value based on the input the user makes (prevents invalid inputs)
   function validate() {
-    if (name === "") {
+    if (name === "" || interviewer === null) {
       return false;
     } 
     return true

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import "components/DayListItem.scss";
 
 export default function DayListItem(props) {
-
+  // all this does is change the text for the spots based on the number it recieves 
   const formatSpots = (prop) => {
     if (prop === 0) {
       return "no spots remaining";
