@@ -9,7 +9,7 @@ Fork and clone the [scheduler-api](https://github.com/lighthouse-labs/scheduler-
   * you will need to have both the scheduler-api and scheduler running in order for the app to populate data
 
 ## Example of Server Running vs Not Running
-If you run the app without the server also running it will populate no data like so:
+!["If you run the app without the server also running it will populate no data"](https://github.com/Joshua-McGee/scheduler/blob/master/docs/Without-server-api.png?raw=true)
 
 
 ## Running Webpack Development Server
