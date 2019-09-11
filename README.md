@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+  Interview Scheduler is a small react app that allows users to book, edit and delete "fake" appointments for the days Monday to Friday.
+
 ## Setup
 
 Install dependencies with `npm install`.
